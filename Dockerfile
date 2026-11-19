@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     awscli \
     && rm -rf /var/lib/apt/lists/*
 
-COPY dadan.sh /opt/ml/processing/input/dadan.sh
-RUN chmod +x /opt/ml/processing/input/dadan.sh
+COPY soleh.sh /opt/ml/processing/input/soleh.sh
+RUN chmod +x /opt/ml/processing/input/soleh.sh
 
-ENTRYPOINT ["/bin/bash", "/opt/ml/processing/input/dadan.sh"]
+ENTRYPOINT ["/bin/bash", "/opt/ml/processing/input/soleh.sh"]
