@@ -1,56 +1,33 @@
-name: Docker Image CI
+
+name: Docker Image CI - Depot
 
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
-
   build:
-    name: Build Docker Image
-    runs-on: depot-ubuntu-24.04-4
+    name: Build and Push to Depot
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: depot/setup-action@v1
-      - uses: depot/build-push-action@v1
-      - name: Build Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:latest
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  test:
-    name: Test Application
-    runs-on: depot-ubuntu-24.04-4
+      - name: Setup Depot
+        uses: depot/setup-action@v1
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run tests
-        run: |
-          echo "Running application tests..."
-          # Replace with your actual test command
-
-  security-scan:
-    name: Docker Security Scan
-    runs-on: depot-ubuntu-24.04-4
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Scan source code
-        run: |
-          echo "Running security checks..."
-          # Add your security scanner here
-
-  docker-check:
-    name: Docker Configuration Check
-    runs-on: depot-ubuntu-24.04-4
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check Dockerfile
-        run: |
-          docker --version
-          test -f Dockerfile
+      - name: Build and Push Docker Image
+        uses: depot/build-push-action@v1
+        with:
+          project: h8kgdxmq4g
+          context: .
+          save: true
+          save-tags: |
+            latest
+            ${{ github.sha }}
