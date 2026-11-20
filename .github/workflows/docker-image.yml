@@ -1,0 +1,55 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  build:
+    name: Build Docker Image
+    runs-on: depot-ubuntu-24.04-4
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:latest
+
+  test:
+    name: Test Application
+    runs-on: depot-ubuntu-24.04-4
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          echo "Running application tests..."
+          # Replace with your actual test command
+
+  security-scan:
+    name: Docker Security Scan
+    runs-on: depot-ubuntu-24.04-4
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan source code
+        run: |
+          echo "Running security checks..."
+          # Add your security scanner here
+
+  docker-check:
+    name: Docker Configuration Check
+    runs-on: depot-ubuntu-24.04-4
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Dockerfile
+        run: |
+          docker --version
+          test -f Dockerfile
